@@ -3,23 +3,48 @@
     ViewBag.Title = "Page inbound links";
 }
 
+<p></p>
 <div class="row">
-    <div class="col-sm-12 col-md-6">
-        <fieldset>
-            <h4>Page inbound links</h4>
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" id="searchinput" class="btn btn-default">Page Url</button>
-                </div>
-                <input type="text" class="form-control" id="searchterm" name="pageUrl" placeholder="Page URL" />
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" id="lookupInboundLinks" type="submit">Find</button>
-                </span>
-            </div>
-            <p class="hidden" id="apppath">@Functions.GetAppPath(Request.ApplicationPath)</p>
-        </fieldset>
+    <div class="jumbotron">
+        <h1>Umbraco Links Manager</h1>
+        <p>The 'ESCC' SEO Tool, Use this application to find 'What Links where', broken links and working links on our site.</p>
     </div>
 </div>
+
 <div class="row">
-    <div class="col-sm-12" id="PermissionsResults"></div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">InBound Link Checker</h3>
+            </div>
+            <div class="panel-body">
+                <p>  Use the Inbound link checker to find 'What Links Where' using the umbraco and redirects database. This tool also uses the InSpyder CSV file but has proven to be unreliable.</p>
+                <p><a class="btn btn-info" href="/InboundLinkChecker/Index">View &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Verified Links</h3>
+            </div>
+            <div class="panel-body">
+                <p>Use Verified Links to find the working links on our site.</p>
+                <p><a class="btn btn-success" href="/VerifiedLinkChecker/Index">View &raquo;</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Broken Links</h3>
+            </div>
+            <div class="panel-body">
+                <p>Use Broken Links to find the links on our site that don't work.</p>
+                <p><a class="btn btn-danger" href="/BrokenLinkChecker/Index">View &raquo;</a></p>
+            </div>
+        </div>
+    </div>
 </div>

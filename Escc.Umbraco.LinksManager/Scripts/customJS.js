@@ -15,9 +15,9 @@
     if (applicationRoot.substr(applicationRoot.length - 1) == '/') {
         applicationRoot = applicationRoot.substr(0, applicationRoot.length - 1);
     }
-    dest.html("<img src=\"" + applicationRoot + "/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
+    dest.html("<img src=\"/Content/ajax-loader.gif\" class=\"loaderimg\" alt=\"Please wait...\" />");
 
-    $.get($("#apppath").html() + "/Home/FindInboundLinks/", { url: url }, function (data) {
+    $.get($("#apppath").html() + "/InboundLinkChecker/FindInboundLinks/", { url: url }, function (data) {
         dest.html(data);
         btn.prop("disabled", false);
     });

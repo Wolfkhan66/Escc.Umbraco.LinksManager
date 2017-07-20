@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
-using Escc.Umbraco.LinksManager.Models;
+using Escc.Umbraco.LinksManager.Models.InboundLinkChecker;
 using Escc.Umbraco.LinksManager.Services.Interfaces;
 
 namespace Escc.Umbraco.LinksManager.Services

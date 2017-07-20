@@ -1,4 +1,4 @@
-﻿using Escc.Umbraco.LinksManager.Models;
+﻿using Escc.Umbraco.LinksManager.Models.InboundLinkChecker;
 
 namespace Escc.Umbraco.LinksManager.Services.Interfaces
 {

@@ -12,6 +12,14 @@
             <div class="navbar-header">
                 <span class="navbar-brand">Umbraco Links Manager</span>
             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("InBound Links", "Index", "InboundLinkChecker")</li>
+                    <li>@Html.ActionLink("Broken Links", "Index", "BrokenLinkChecker")</li>
+                    <li>@Html.ActionLink("Verified Links", "Index", "VerifiedLinkChecker")</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="container body-content">

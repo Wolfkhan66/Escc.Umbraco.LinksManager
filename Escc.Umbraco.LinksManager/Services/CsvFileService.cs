@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
-using Escc.Umbraco.LinksManager.Models;
+using Escc.Umbraco.LinksManager.Models.InboundLinkChecker;
 using Escc.Umbraco.LinksManager.Services.Interfaces;
 using Microsoft.VisualBasic.FileIO;
 

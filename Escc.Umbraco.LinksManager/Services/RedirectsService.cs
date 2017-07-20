@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using Escc.Umbraco.LinksManager.Models;
+using Escc.Umbraco.LinksManager.Models.InboundLinkChecker;
 using Escc.Umbraco.LinksManager.Services.Interfaces;
 
 namespace Escc.Umbraco.LinksManager.Services
