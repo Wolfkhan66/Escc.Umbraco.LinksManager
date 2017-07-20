@@ -1,5 +1,7 @@
 ﻿using Escc.Umbraco.LinksManager.Models.BrokenLinks;
 using Microsoft.VisualBasic.FileIO;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Web.Mvc;
@@ -8,63 +10,89 @@ namespace Escc.Umbraco.LinksManager.Controllers
 {
     public class BrokenLinkCheckerController : Controller
     {
+        #region Global Variables
         public string _filePath = ConfigurationManager.AppSettings["InspyderBrokenLinks"];
-        // GET: BrokenLinkChecker
+        #endregion
+
+        #region ActionResults
         public ActionResult Index()
         {
-            return View();
-        }
-        public ActionResult ViewAll(BrokenLinksViewModel model = null)
-        {
-            if (model == null)
-            {
-                model = new BrokenLinksViewModel();
-            }
-            model.BrokenLinksTable.Table = PrepareViewAllDataTable(model.ViewResultsFrom);
-
+            var model = new BrokenLinksViewModel();
+            model.TotalBroken = CountCSVRows("Link Errors");
             return View(model);
         }
 
-        [Route("Next", Name = "Next")]
-        public ActionResult Next(int ViewResultsFrom)
+        [Route("ViewAll", Name = "ViewAll")]
+        public ActionResult ViewAll(string PagedResults = "Default", int ViewResultsFrom = 1, int TotalBroken = 0)
         {
             var model = new BrokenLinksViewModel();
-            model.ViewResultsFrom = (ViewResultsFrom + 1000);
-            ViewAll(model);
-            return View("ViewAll" ,model);
-        }
+            model.TotalBroken = TotalBroken;
 
-        [Route("Previous", Name = "Previous")]
-        public ActionResult Previous(int ViewResultsFrom)
-        {
-            var model = new BrokenLinksViewModel();
-            if (ViewResultsFrom > 1000)
+            try
             {
-                model.ViewResultsFrom = (ViewResultsFrom - 1000);
+                if (PagedResults == "Next")
+                {
+                    if (model.ViewResultsFrom < TotalBroken)
+                    {
+                        model.ViewResultsFrom = (model.ViewResultsFrom + 500);
+                    }
+
+                }
+                else if (PagedResults == "Previous")
+                {
+                    if (model.ViewResultsFrom > 500)
+                    {
+                        model.ViewResultsFrom = (model.ViewResultsFrom - 500);
+                    }
+                }
+                model.BrokenLinksTable.Table = PrepareViewAllDataTable(model.ViewResultsFrom);
             }
-            ViewAll(model);
-            return View("ViewAll", model);
+            catch (Exception error)
+            {
+                model.ErrorMessage = error.Message;
+            }
+            return View(model);
         }
+        #endregion
 
-        public DataTable PrepareViewAllDataTable(int ViewResultsFrom)
+        #region Helpers
+        public void CheckFilePath()
         {
-            var Table = new DataTable();
-            Table.Columns.Add("Referrer", typeof(string));
-            Table.Columns.Add("Broken Link", typeof(string));
-            Table.Columns.Add("Error Type", typeof(string));
-
             // Check a file path was supplied
             if (string.IsNullOrEmpty(_filePath))
             {
-                // Throw Exception
+                var err = new Exception("No File Path Supplied!");
+                throw err;
             }
 
             // Check file is present & accessible
             if (!System.IO.File.Exists(_filePath))
             {
-                // Throw Exception
+                var err = new Exception("No CSV file was found or it is not accessible!");
+                throw err;
             }
+        }
 
+        public DataTable PrepareViewAllDataTable(int ViewResultsFrom)
+        {
+            var Results = ProcessCSVFile("Link Errors", ViewResultsFrom);
+
+            var Table = new DataTable();
+            Table.Columns.Add("Referrer", typeof(string));
+            Table.Columns.Add("Broken Link", typeof(string));
+            Table.Columns.Add("Error Type", typeof(string));
+
+            foreach (var field in Results)
+            {
+                Table.Rows.Add(field[0], field[1], field[2]);
+            }
+            return Table;
+        }
+
+        public List<string[]> ProcessCSVFile(string fileType, int ViewResultsFrom)
+        {
+            CheckFilePath();
+            var Results = new List<string[]>();
             using (var csvParser = new TextFieldParser(_filePath))
             {
                 csvParser.CommentTokens = new[] { "#" };
@@ -80,7 +108,7 @@ namespace Escc.Umbraco.LinksManager.Controllers
                     {
                         // Throw Exception
                     };
-                } while (!d.StartsWith("Link Errors"));
+                } while (!d.StartsWith(fileType));
 
                 // Read past the row with the column names
                 csvParser.ReadLine();
@@ -89,27 +117,61 @@ namespace Escc.Umbraco.LinksManager.Controllers
                 while (!csvParser.EndOfData)
                 {
                     lineNumber++;
-                    // break the loop once we have 1000 results to display
-                    if (lineNumber >= (ViewResultsFrom + 1000))
+                    if (lineNumber >= (ViewResultsFrom + 500))
                     {
                         break;
                     }
                     // limit the amount of results to return
-                    if (lineNumber >= ViewResultsFrom && lineNumber <= (ViewResultsFrom + 999) )
+                    if (lineNumber >= ViewResultsFrom && lineNumber <= (ViewResultsFrom + 499))
                     {
                         // Read current line fields, pointer moves to the next line.
                         var fields = csvParser.ReadFields();
 
                         // empty row? Move to the next one
                         if (fields == null) continue;
-                        Table.Rows.Add(fields[0], fields[1], fields[2]);
+                        Results.Add(fields);
+                    }
+                    else
+                    {
+                        // if we havent reached the results we need yet, then advance the pointer to the next line
+                        csvParser.ReadLine();
                     }
                 }
             }
-            return Table;
+            return Results;
         }
 
+        public int CountCSVRows(string fileType)
+        {
+            CheckFilePath();
+            int lineNumber = 0;
+            using (var csvParser = new TextFieldParser(_filePath))
+            {
+                csvParser.CommentTokens = new[] { "#" };
+                csvParser.SetDelimiters(",");
+                csvParser.HasFieldsEnclosedInQuotes = true;
+                string d;
+                // Read until we find the Report Title line (Broken Links)
+                do
+                {
+                    d = csvParser.ReadLine();
+                    if (d == null)
+                    {
+                        // Throw Exception
+                    };
+                } while (!d.StartsWith(fileType));
 
+                // Read past the row with the column names
+                csvParser.ReadLine();
+                while (!csvParser.EndOfData)
+                {
+                    lineNumber++;
+                    csvParser.ReadLine();
+                }
+            }
+            return lineNumber;
+        }
+        #endregion
 
     }
 }

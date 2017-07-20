@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.Title = "Broken Links";
 }
+@model Escc.Umbraco.LinksManager.Models.BrokenLinks.BrokenLinksViewModel
+
 <p></p>
 <div class="row">
     <div class="col-sm-8 col-md-8 col-lg-8">
@@ -11,7 +13,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                        <p> Type in a url to find any broken children of that link. For example searching for 'https://www.eastsussex.gov.uk/environment/' will find any broken links that come after '/environment/'.</p>
+                        <p> Type in a url to find any broken links on the children of that link. For example searching for 'https://www.eastsussex.gov.uk/environment/' will find any broken links that appear on pages after '/environment/'.</p>
                     </div>
                 </div>
                 <div class="row">
@@ -39,10 +41,11 @@
             </div>
             <div class="panel-body">
                 <div class="col-sm-8 col-md-8 col-lg-8">
-                    <p>Total Broken: #####</p>
+                    <p>Total Broken: @Model.TotalBroken </p>
                 </div>
                 <div class="col-sm-4 col-md-4 col-lg-4">
-                    <p><a class="btn btn-success" href="/BrokenLinkChecker/ViewAll">View &raquo;</a></p>
+                    @Html.RouteLink("ViewAll", "ViewAll", new {PagedResults = "Default", ViewResultsFrom = Model.ViewResultsFrom, TotalBroken = Model.TotalBroken }, new { @class = "btn btn-info" })
+                    
                 </div>
             </div>
         </div>

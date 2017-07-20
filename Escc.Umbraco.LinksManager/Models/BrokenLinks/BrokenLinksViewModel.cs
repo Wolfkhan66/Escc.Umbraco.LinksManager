@@ -6,6 +6,8 @@ namespace Escc.Umbraco.LinksManager.Models.BrokenLinks
     {
         public TableModel BrokenLinksTable { get; set; }
         public int ViewResultsFrom { get; set; }
+        public int TotalBroken { get; set; }
+        public string ErrorMessage { get; set; }
         public BrokenLinksViewModel()
         {
             ViewResultsFrom = 1;
