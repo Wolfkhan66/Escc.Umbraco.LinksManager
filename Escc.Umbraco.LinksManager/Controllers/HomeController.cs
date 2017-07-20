@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using Escc.Umbraco.LinksManager.Services.Interfaces;
-using Exceptionless;
+﻿using System.Web.Mvc;
 
 namespace Escc.Umbraco.LinksManager.Controllers
 {

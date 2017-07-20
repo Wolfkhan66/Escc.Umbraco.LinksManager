@@ -74,7 +74,7 @@ namespace Escc.Umbraco.LinksManager.Services
         private void GetExternalLinks_Inspyder(PageLinksModel model, string url)
         {
             // Get file path from config
-            var inspyderCsvFilePath = ConfigurationManager.AppSettings["InspyderCsvFile"];
+            var inspyderCsvFilePath = ConfigurationManager.AppSettings["InspyderVerifiedLinks"];
             if (string.IsNullOrEmpty(inspyderCsvFilePath)) return;
 
             var el = new CsvFileService(inspyderCsvFilePath);
