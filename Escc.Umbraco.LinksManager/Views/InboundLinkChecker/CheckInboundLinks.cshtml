@@ -1,96 +1,46 @@
-﻿@using System.Configuration
-@model  Escc.Umbraco.LinksManager.Models.InboundLinkChecker.PageLinksModel
-@{
-    var unpublishedStates = new List<string> {"[Parent unpublished]", "[Currently unpublished]", "[Not yet published]"};
+﻿@model  Escc.Umbraco.LinksManager.Models.InboundLinkChecker.InboundLinkCheckerViewModel
 
-    var siteUri = ConfigurationManager.AppSettings["SiteUri"];
-    var editurl = string.Format("{0}#/content/content/edit/", siteUri);
-    var viewurl = siteUri.Replace("/umbraco/", "");
+<h4>Inbound links to: @Model.PageName (Id @Model.PageID)</h4>
+<p></p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Local</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p></p>
+                @{Html.RenderPartial("~/Views/Partials/_DataTable.cshtml", Model.LocalLinks);}
+            </div>
+        </div>
+    </div>
+</div>
+<p></p>
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">Redirects</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p></p>
+                @{Html.RenderPartial("~/Views/Partials/_DataTable.cshtml", Model.RedirectedLinks);}
+            </div>
+        </div>
+    </div>
+</div>
+<p></p>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">External</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p></p>
+                @{Html.RenderPartial("~/Views/Partials/_DataTable.cshtml", Model.ExternalLinks);}
+            </div>
+        </div>
+    </div>
+</div>
 
-    var redirectEditUri = ConfigurationManager.AppSettings["RedirectEdit"];
-}
-<h4>Inbound links to: @Model.PageName (Id @Model.PageId)</h4>
-
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th colspan="3">Local Links</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in @Model.InboundLinksLocal)
-        {
-            <tr>
-                <td class="col-md-3">
-                    @item.PageName
-                    <br />
-                    [Fields: @string.Join(", ", item.FieldNames)]
-                </td>
-                <td class="col-md-1">
-                    <a class="ui-button" href="@editurl@item.PageId" target="_blank">edit page</a>
-                </td>
-                <td class="col-md-2">
-                    @if (!unpublishedStates.Contains(item.PageUrl))
-                    {
-                        <a class="ui-button" href="@viewurl@item.PageUrl" target="_blank">view page</a>
-                    }
-                    else
-                    {
-                        @item.PageUrl
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th colspan="4">Redirected Links</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in @Model.InboundLinksRedirect)
-        {
-            <tr>
-                <td class="col-md-4">
-                    @item.Pattern
-                </td>
-                <td class="col-md-1">
-                    <a class="ui-button" href="@redirectEditUri@item.RedirectId" target="_blank">edit</a>
-                </td>
-                <td class="col-md-2">
-                    @(item.Type == 1 ? Html.Raw("Short Url") : Html.Raw("Moved Page"))
-                </td>
-                <td class="col-md-5">
-                    @item.Comment
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th colspan="3">External Links</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in @Model.InboundLinksExternal)
-        {
-            <tr>
-                <td class="col-md-3">
-                    @item.Referrer
-                </td>
-                <td class="col-md-1">
-                    @item.Type
-                </td>
-                <td class="col-md-2">
-                    <a class="ui-button" href="@item.Referrer" target="_blank">view page</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
