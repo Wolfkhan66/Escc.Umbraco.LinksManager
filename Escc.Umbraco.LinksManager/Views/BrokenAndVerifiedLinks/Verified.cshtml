@@ -1,0 +1,69 @@
+﻿@model Escc.Umbraco.LinksManager.Models.BrokenAndVerifiedLinks.VerifiedLinksViewModel
+
+<p></p>
+@if (Model.ErrorMessage != null)
+{
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Error!</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Model.ErrorMessage</p>
+        </div>
+    </div>
+}
+else
+{
+    <p></p>
+    <div class="panel panel-info">
+        <div class="panel-heading">Search All Verified Links</div>
+        <div class="panel-body">
+            <div class="row">
+                @using (Html.BeginForm("SearchAllVerified", "BrokenAndVerifiedLinks", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">
+                            @Html.TextBoxFor(model => model.Query, new { @placeholder = "e.g. https://www.eastsussex.gov.uk", @class = "form-control" })
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-primary" value="Search" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            @if (Model.Search)
+            {
+                <h3 class="panel-title">Verified Links that contain: @Model.Query</h3>
+            }
+            else if (!Model.Search && Model.TotalVerified > 2000)
+            {
+                <h3 class="panel-title">Verified Links: [@Model.ShowResultsFrom - @(@Model.ShowResultsFrom + 2000)] out of: @Model.TotalVerified     @Html.RouteLink("<<<", "Verified", new { ShowResultsFrom = 0 }, new { @class = "btn btn-default" }) @Html.RouteLink("< 2000", "Verified", new { ShowResultsFrom = (Model.ShowResultsFrom - 2000) }, new { @class = "btn btn-default" })  @Html.RouteLink("2000 >", "Verified", new { ShowResultsFrom = (Model.ShowResultsFrom + 2000) }, new { @class = "btn btn-default" }) @Html.RouteLink(">>>", "Verified", new { ShowResultsFrom = (Model.TotalVerified - 2000) }, new { @class = "btn btn-default" })</h3>
+            }
+            else
+            {
+                <h3 class="panel-title">Broken Links:</h3>
+            }
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <p></p>
+                    @{Html.RenderPartial("~/Views/Partials/_DataTable.cshtml", Model.VerifiedLinksTable);}
+                    <style>
+                        td:first-child, td:nth-child(3) {
+                            word-wrap: break-word;
+                            word-break: break-all;
+                            white-space: normal;
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+    </div>
+                        }

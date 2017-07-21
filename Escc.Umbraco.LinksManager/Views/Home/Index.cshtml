@@ -31,7 +31,7 @@
             </div>
             <div class="panel-body">
                 <p>Use Verified Links to find the working links on our site.</p>
-                <p><a class="btn btn-success" href="/VerifiedLinkChecker/Index">View &raquo;</a></p>
+                @Html.RouteLink("View", "Verified", new { }, new { @class = "btn btn-success" })
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="panel-body">
                 <p>Use Broken Links to find the links on our site that don't work.</p>
-                <p><a class="btn btn-danger" href="/BrokenLinkChecker/Index">View &raquo;</a></p>
+                @Html.RouteLink("View", "Broken", new {}, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>

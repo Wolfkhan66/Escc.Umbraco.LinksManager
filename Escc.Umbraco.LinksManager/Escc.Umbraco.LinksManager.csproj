@@ -162,16 +162,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\BrokenLinkCheckerController.cs" />
+    <Compile Include="Controllers\BrokenAndVerifiedLinksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InboundLinkCheckerController.cs" />
-    <Compile Include="Controllers\VerifiedLinkCheckerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="IOC\Installers\ControllersInstaller .cs" />
     <Compile Include="IOC\Installers\UmbracoServiceInstaller.cs" />
-    <Compile Include="Models\BrokenLinks\BrokenLinksViewModel.cs" />
+    <Compile Include="Models\BrokenAndVerifiedLinks\BrokenLinksViewModel.cs" />
+    <Compile Include="Models\BrokenAndVerifiedLinks\VerifiedLinksViewModel.cs" />
     <Compile Include="Models\DataModels\TableModel.cs" />
     <Compile Include="Models\InboundLinkChecker\ErrorMessageModel.cs" />
     <Compile Include="Models\InboundLinkChecker\InspyderLinkModel.cs" />
@@ -180,7 +180,6 @@
     <Compile Include="Models\InboundLinkChecker\PageModel.cs" />
     <Compile Include="Models\InboundLinkChecker\RedirectModel.cs" />
     <Compile Include="IOC\WindsorControllerFactory.cs" />
-    <Compile Include="Models\VerifiedLinks\VerifiedLinksViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CsvFileService.cs" />
     <Compile Include="Services\Interfaces\ICsvFileService.cs" />
@@ -478,11 +477,9 @@
     <Content Include="Views\InboundLinkChecker\ToolsError.cshtml" />
     <Content Include="Views\InboundLinkChecker\CheckInboundLinks.cshtml" />
     <Content Include="Views\InboundLinkChecker\Index.cshtml" />
-    <Content Include="Views\BrokenLinkChecker\Index.cshtml" />
-    <Content Include="Views\VerifiedLinkChecker\Index.cshtml" />
-    <Content Include="Views\BrokenLinkChecker\ViewAll.cshtml" />
-    <Content Include="Views\VerifiedLinkChecker\ViewAll.cshtml" />
     <Content Include="Views\Partials\_DataTable.cshtml" />
+    <Content Include="Views\BrokenAndVerifiedLinks\Broken.cshtml" />
+    <Content Include="Views\BrokenAndVerifiedLinks\Verified.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
